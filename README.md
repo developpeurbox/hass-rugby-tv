@@ -1,12 +1,12 @@
 # Rugby TV — Intégration HACS pour Home Assistant
 [![PayPal](https://img.shields.io/badge/paypal-me-blue.svg?style=for-the-badge&color=purple&logo=paypal&logoColor=ccc&link=https%3A%2F%2Fpaypal.me%2hlaissus/5)](https://paypal.me/hlaissus/5)
-[![GitHub Release]( https://img.shields.io/github/v/release/developpeurbox/hass-rubgy-tv?style=for-the-badge&color=blue)](https://github.com/developpeurbox/hass-rubgy-tv/releases)
+[![GitHub Release]( https://img.shields.io/github/v/release/developpeurbox/hass-rugby-tv?style=for-the-badge&color=blue)](https://github.com/developpeurbox/hass-rugby-tv/releases)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge&color=blue)](https://github.com/hacs/integration)
 [![Community Forum]( https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge&color=pink)](https://forum.hacf.fr/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rubgy-tv/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/blob/main/LICENSE)
 
-[![HACS Action](https://github.com/developpeurbox/hass-rubgy-tv/actions/workflows/hacs.yml/badge.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rubgy-tv/actions/workflows/hacs.yml)
-[![HACS Action](https://github.com/developpeurbox/hass-rubgy-tv/actions/workflows/hassfest.yml/badge.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rubgy-tv/actions/workflows/hassfest.yml)
+[![HACS Action](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hacs.yml/badge.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hacs.yml)
+[![HACS Action](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hassfest.yml/badge.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hassfest.yml)
 
 Intégration personnalisée pour Home Assistant permettant de suivre le **prochain match** de vos clubs de TOP 14 et PRO D2 préférés, à partir des fiches club officielles de la LNR (`top14.lnr.fr` / `prod2.lnr.fr`), avec sa carte Lovelace dédiée **incluse** (`rugby-lnr-game-card`).
 

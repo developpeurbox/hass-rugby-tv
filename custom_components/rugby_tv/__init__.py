@@ -17,7 +17,7 @@ PLATFORMS = ["sensor"]
 
 CARD_FILENAME = "rugby-tv-game-card.js"
 CARD_URL_PATH = f"/{DOMAIN}_card"
-CARD_VERSION = "0.0.3"
+CARD_VERSION = "0.0.4"
 
 
 async def _async_register_card(hass: HomeAssistant) -> None:
@@ -73,5 +73,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Suppression de l'intégration."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unload_ok:
-        hass.data[DOMAIN].pop(entry.entry_id)
+        hass.data[DOMAIN].pop(entry.entry_
+                              id)
     return unload_ok

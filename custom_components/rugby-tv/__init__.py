@@ -1,4 +1,4 @@
-"""Intégration Rugby LNR (TOP 14 / PRO D2) pour Home Assistant."""
+"""Intégration Rugby TV (TOP 14 / PRO D2) pour Home Assistant."""
 from __future__ import annotations
 
 import logging
@@ -15,9 +15,9 @@ _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = ["sensor"]
 
-CARD_FILENAME = "rugby-lnr-game-card.js"
+CARD_FILENAME = "rugby-tv-game-card.js"
 CARD_URL_PATH = f"/{DOMAIN}_card"
-CARD_VERSION = "0.1.0"
+CARD_VERSION = "0.0.3"
 
 
 async def _async_register_card(hass: HomeAssistant) -> None:

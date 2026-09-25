@@ -95,7 +95,7 @@ Les données sont mises à jour automatiquement **toutes les 6 heures**. Un rafr
 
 ## 🏟️ Clubs suivis
 
-Le fichier [`custom_components/rugby_tv/clubs.json`](custom_components/rugby_tv/clubs.json) liste les clubs TOP 14 et PRO D2 suivis (slug LNR + compétition). Pour ajouter/retirer un club, il suffit d'éditer ce fichier avec le slug tel qu'il apparaît dans l'URL de sa fiche (`https://top14.lnr.fr/club/<slug>` ou `https://prod2.lnr.fr/club/<slug>`) — les noms complets et logos sont résolus automatiquement par scraping, pas besoin de les renseigner à la main.
+Le fichier [`custom_components/rugby_tv/clubs.json`](custom_components/rugby_tv/clubs.json) liste les clubs TOP 14 et PRO D2 suivis.
 
 ## ⚠️ Note importante sur le scraping
 

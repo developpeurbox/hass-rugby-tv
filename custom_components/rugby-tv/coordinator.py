@@ -372,6 +372,6 @@ class RugbyLnrCoordinator(DataUpdateCoordinator):
                         },
                     }
         except Exception as err:  # noqa: BLE001
-            raise UpdateFailed(f"Erreur scraping Rugby LNR : {err}") from err
+            raise UpdateFailed(f"Erreur scraping Rugby TV : {err}") from err
 
         return data

@@ -1,10 +1,10 @@
 /* ========================================================
-   Rugby TV Game Card — v0.1.0
+   Rugby TV Game Card — v0.0.2
    Carte Lovelace pour les sensors de l'intégration rugby_tv
    (TOP 14 / PRO D2 — https://github.com/developpeurbox/hass-rugby-tv)
    ======================================================== */
 
-const RUGBY_TV_GAME_CARD_VERSION = "v0.0.1";
+const RUGBY_TV_GAME_CARD_VERSION = "v0.0.2";
 
 class RugbyTvGameCard extends HTMLElement {
 
@@ -115,6 +115,7 @@ class RugbyTvGameCard extends HTMLElement {
     const logoDiff2 = b.logoDiffuseur2 || "";
     const heure       = b.heure         || "";
     const date        = b.date_fr || b.date || "";
+    const lienMatch   = b.lien_match    || "";
 
     this.innerHTML = `
       <ha-card>
@@ -172,9 +173,17 @@ class RugbyTvGameCard extends HTMLElement {
           #${uid} .rug-footer {
             background: var(--rugby-footer-bg, rgba(0,0,0,0.45));
             border-top: 1px solid rgba(255,255,255,.07);
-            padding: 11px 16px; text-align: center;
+            padding: 11px 16px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
             color: var(--rugby-footer-color, #e63946);
             font-size: 16px; font-weight: 600; letter-spacing: .3px;
+          }
+          #${uid} .rug-card.has-link { cursor: pointer; }
+          #${uid} .rug-card.has-link:hover .rug-footer {
+            background: color-mix(in srgb, var(--rugby-footer-bg, rgba(0,0,0,0.45)) 80%, #fff 8%);
+          }
+          #${uid} .rug-link-hint {
+            font-size: 11px; font-weight: 500; opacity: .65; letter-spacing: 0;
           }
           #${uid} .channel-zone {
             display: flex;
@@ -201,7 +210,7 @@ class RugbyTvGameCard extends HTMLElement {
         </style>
 
         <div id="${uid}">
-          <div class="rug-card">
+          <div class="rug-card ${lienMatch ? "has-link" : ""}">
             <div class="rug-top">
               <div class="rug-body">
                 <div class="rug-game">
@@ -249,11 +258,25 @@ class RugbyTvGameCard extends HTMLElement {
                 </div>
               </div>
             </div>
-            ${date ? `<div class="rug-footer">${date}</div>` : ""}
+            ${date ? `
+              <div class="rug-footer">
+                <span>${date}</span>
+                ${lienMatch ? `<span class="rug-link-hint">· Feuille de match ↗</span>` : ""}
+              </div>
+            ` : ""}
           </div>
         </div>
       </ha-card>
     `;
+
+    if (lienMatch) {
+      const cardEl = this.querySelector(`#${uid} .rug-card`);
+      if (cardEl) {
+        cardEl.addEventListener("click", () => {
+          window.open(lienMatch, "_blank", "noopener,noreferrer");
+        });
+      }
+    }
   }
 
   static getConfigElement() {

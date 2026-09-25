@@ -1,22 +1,22 @@
 /* ========================================================
-   Rugby LNR Game Card — v0.1.0
-   Carte Lovelace pour les sensors de l'intégration rugby_lnr
-   (TOP 14 / PRO D2 — https://github.com/developpeurbox/hass-rugby-lnr)
+   Rugby TV Game Card — v0.1.0
+   Carte Lovelace pour les sensors de l'intégration rugby_tv
+   (TOP 14 / PRO D2 — https://github.com/developpeurbox/hass-rugby-tv)
    ======================================================== */
 
-const RUGBY_LNR_GAME_CARD_VERSION = "v0.0.1";
+const RUGBY_TV_GAME_CARD_VERSION = "v0.0.1";
 
-class RugbyLnrGameCard extends HTMLElement {
+class RugbyTvGameCard extends HTMLElement {
 
   constructor() {
     super();
-    this._uid = "rugbylnr-" + Math.random().toString(36).slice(2, 9);
+    this._uid = "rugbytv-" + Math.random().toString(36).slice(2, 9);
   }
 
   setConfig(config) {
     if (!config.entity) throw new Error("Vous devez définir une entité.");
     this._config = config;
-    console.info(`%c RUGBY-LNR-GAME-CARD %c ${RUGBY_LNR_GAME_CARD_VERSION} `, "color:#e63946;background:#1e1e2e;font-weight:700;padding:2px 4px;border-radius:4px 0 0 4px", "color:#1e1e2e;background:#e63946;font-weight:700;padding:2px 4px;border-radius:0 4px 4px 0");
+    console.info(`%c RUGBY-TV-GAME-CARD %c ${RUGBY_TV_GAME_CARD_VERSION} `, "color:#e63946;background:#1e1e2e;font-weight:700;padding:2px 4px;border-radius:4px 0 0 4px", "color:#1e1e2e;background:#e63946;font-weight:700;padding:2px 4px;border-radius:0 4px 4px 0");
     if (this._hass) this.hass = this._hass;
   }
 
@@ -257,7 +257,7 @@ class RugbyLnrGameCard extends HTMLElement {
   }
 
   static getConfigElement() {
-    return document.createElement("rugby-lnr-game-card-editor");
+    return document.createElement("rugby-tv-game-card-editor");
   }
 
   static getStubConfig() {
@@ -267,13 +267,13 @@ class RugbyLnrGameCard extends HTMLElement {
   getCardSize() { return 3; }
 }
 
-customElements.define("rugby-lnr-game-card", RugbyLnrGameCard);
+customElements.define("rugby-tv-game-card", RugbyTvGameCard);
 
 /* ========================================================
    ÉDITEUR GRAPHIQUE
    ======================================================== */
 
-class RugbyLnrGameCardEditor extends HTMLElement {
+class RugbyTvGameCardEditor extends HTMLElement {
 
   constructor() {
     super();
@@ -331,7 +331,7 @@ class RugbyLnrGameCardEditor extends HTMLElement {
 
       <div class="editor">
         <div class="field">
-          <label>Sensor Rugby LNR</label>
+          <label>Sensor Rugby TV</label>
           <select id="entity-select">
             <option value="">-- Choisir un sensor --</option>
             ${entities.map(e => `<option value="${e}" ${e === current ? "selected" : ""}>${e}</option>`).join("")}
@@ -393,4 +393,4 @@ class RugbyLnrGameCardEditor extends HTMLElement {
   }
 }
 
-customElements.define("rugby-lnr-game-card-editor", RugbyLnrGameCardEditor);
+customElements.define("rugby-tv-game-card-editor", RugbyTvGameCardEditor);

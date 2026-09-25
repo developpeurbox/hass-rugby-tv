@@ -48,19 +48,19 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
 2. Ajouter l'URL de ce dépôt, catégorie **Integration**.
 3. Installer **Rugby TV LNR (TOP 14 / PRO D2)**.
 4. Redémarrer Home Assistant.
-5. **Paramètres → Appareils & services → Ajouter une intégration → Rugby LNR**.
+5. **Paramètres → Appareils & services → Ajouter une intégration → Rugby TV**.
 
 ## 🏗️ Installation manuelle
 
-1. Copier `custom_components/rugby_lnr/` dans le dossier `custom_components/` de votre instance Home Assistant.
+1. Copier `custom_components/rugby-tv/` dans le dossier `custom_components/` de votre instance Home Assistant.
 2. Redémarrer Home Assistant.
 
-## 🎨 Carte `rugby-lnr-game-card`
+## 🎨 Carte `rugby-tv-game-card`
 
 Fournie avec l'intégration (dossier `www/`), enregistrée automatiquement au démarrage — pas besoin d'ajouter une ressource Lovelace manuellement.
 
 ```yaml
-type: custom:rugby-lnr-game-card
+type: custom:rugby-tv-game-card
 entity: sensor.rugby_toulouse
 footer_bg: "rgba(0,0,0,0.6)"
 footer_color: "#e63946"
@@ -75,7 +75,7 @@ card:
 filter:
   include:
     - options:
-        type: custom:rugby-lnr-game-card
+        type: custom:rugby-tv-game-card
       entity_id: sensor.rugby_*
       sort:
         method: attribute
@@ -88,8 +88,8 @@ Les données sont mises à jour automatiquement **toutes les 6 heures**. Un rafr
 
 ## 🏟️ Clubs suivis
 
-Le fichier [`custom_components/rugbytv/clubs.json`](custom_components/rugbytv/clubs.json) liste les clubs TOP 14 et PRO D2 suivis (slug LNR + compétition). Pour ajouter/retirer un club, il suffit d'éditer ce fichier avec le slug tel qu'il apparaît dans l'URL de sa fiche (`https://top14.lnr.fr/club/<slug>` ou `https://prod2.lnr.fr/club/<slug>`) — les noms complets et logos sont résolus automatiquement par scraping, pas besoin de les renseigner à la main.
+Le fichier [`custom_components/rugby-tv/clubs.json`](custom_components/rugby-tv/clubs.json) liste les clubs TOP 14 et PRO D2 suivis (slug LNR + compétition). Pour ajouter/retirer un club, il suffit d'éditer ce fichier avec le slug tel qu'il apparaît dans l'URL de sa fiche (`https://top14.lnr.fr/club/<slug>` ou `https://prod2.lnr.fr/club/<slug>`) — les noms complets et logos sont résolus automatiquement par scraping, pas besoin de les renseigner à la main.
 
 ## ⚠️ Note importante sur le scraping
 
-Cette intégration s'appuie sur la structure HTML actuelle des pages club `top14.lnr.fr` / `prod2.lnr.fr` (repérage du bloc "Prochain match", des logos `cdn.lnr.fr/club/<slug>/photo/logo.*`, du diffuseur `assets.lnr.fr/*` et de l'heure au format `HHhMM`). Le parsing (`coordinator.py`) a été écrit et testé sur des extraits de page reconstitués à partir du rendu du site, mais **n'a pas encore été validé contre le HTML brut en conditions réelles** — à tester et ajuster une fois déployé (activez les logs `debug` du composant `rugby_lnr` en cas de sensor vide ou d'erreur). Si la LNR fait évoluer la structure de ses pages, seules les expressions régulières de `coordinator.py` sont à corriger.
+Cette intégration s'appuie sur la structure HTML actuelle des pages club `top14.lnr.fr` / `prod2.lnr.fr` (repérage du bloc "Prochain match", des logos `cdn.lnr.fr/club/<slug>/photo/logo.*`, du diffuseur `assets.lnr.fr/*` et de l'heure au format `HHhMM`). Le parsing (`coordinator.py`) a été écrit et testé sur des extraits de page reconstitués à partir du rendu du site, mais **n'a pas encore été validé contre le HTML brut en conditions réelles** — à tester et ajuster une fois déployé (activez les logs `debug` du composant `rugby-tv` en cas de sensor vide ou d'erreur). Si la LNR fait évoluer la structure de ses pages, seules les expressions régulières de `coordinator.py` sont à corriger.

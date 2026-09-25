@@ -64,7 +64,8 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
 
 ## 🎴 Carte Lovelace
 
-Voir [`ha-rugby-tv-game-card`](https://github.com/developpeurbox/ha-rugby-tv-game-card) pour l'installation (HACS "Frontend" ou manuelle + ressource Lovelace). Une fois installée :
+Voir [`ha-rugby-tv-game-card`](https://github.com/developpeurbox/ha-rugby-tv-game-card) pour l'installation (HACS "Frontend" ou manuelle + ressource Lovelace).
+Une fois installée :
 
 ```yaml
 type: custom:rugby-tv-game-card
@@ -88,6 +89,9 @@ filter:
         method: attribute
         attribute: datetime
 ```
+### 🔔 Notification
+
+Voir les [**Rugby TV blueprints**](https://github.com/developpeurbox/hass-rugby-tv/blob/main/blueprints/readme.md) pour recevoir un rappel sur votre téléphone le matin du match à 08:00 :
 
 ## 🔁 Rafraîchissement
 

@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Rugby LNR — Clubs",
+        "description": "Sélectionnez les clubs à suivre (TOP 14 et PRO D2 confondus).",
+        "data": {
+          "clubs": "Clubs"
+        }
+      }
+    },
+    "error": {
+      "no_club": "Sélectionnez au moins un club."
+    },
+    "abort": {
+      "already_configured": "Cette configuration existe déjà."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Rugby LNR — Modifier les clubs",
+        "description": "Choisissez les clubs à suivre (TOP 14 et PRO D2 confondus).",
+        "data": {
+          "clubs": "Clubs"
+        }
+      }
+    },
+    "error": {
+      "no_club": "Sélectionnez au moins un club."
+    }
+  }
+}

@@ -65,7 +65,8 @@ Avec sa carte Lovelace dédiée **incluse** (`rugby-lnr-game-card`).
 
 ## 🎨 Carte `rugby-tv-game-card`
 
-Fournie avec le plugin https://github.com/developpeurbox/ha-rugby-tv-game-card/tree/main
+Fournie avec le plugin 
+https://github.com/developpeurbox/ha-rugby-tv-game-card
 
 
 ```yaml

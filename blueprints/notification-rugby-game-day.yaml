@@ -18,10 +18,9 @@ blueprint:
 
     notification_service:
       name: Service de notification
-      description: "Ex: notify.mobiles_famille"
-      default: notify.mobile
+      description: Choisissez le service de notification à utiliser (ex. notify.mobile_app_...)
       selector:
-        text:
+        action: {}
 
     notify_time:
       name: Heure de vérification

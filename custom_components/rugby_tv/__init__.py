@@ -17,7 +17,6 @@ PLATFORMS = ["sensor"]
 
 CARD_FILENAME = "rugby-tv-game-card.js"
 CARD_URL_PATH = f"/{DOMAIN}_card"
-CARD_VERSION = "0.0.4"
 
 
 async def _async_register_card(hass: HomeAssistant) -> None:
@@ -39,7 +38,14 @@ async def _async_register_card(hass: HomeAssistant) -> None:
         # HA plus ancien
         hass.http.register_static_path(url, str(card_path), cache_headers=False)
 
-    add_extra_js_url(hass, f"{url}?v={CARD_VERSION}")
+    # Cache-busting automatique : basé sur la date de modification du fichier,
+    # pas besoin de gérer un numéro de version à la main en plus de celui du .js.
+    try:
+        cache_key = int((await hass.async_add_executor_job(card_path.stat)).st_mtime)
+    except OSError:
+        cache_key = 0
+
+    add_extra_js_url(hass, f"{url}?v={cache_key}")
     hass.data[f"{DOMAIN}_card_registered"] = True
 
 
@@ -73,6 +79,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Suppression de l'intégration."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unload_ok:
-        hass.data[DOMAIN].pop(entry.entry_
-                              id)
+        hass.data[DOMAIN].pop(entry.entry
+                              _id)
     return unload_ok

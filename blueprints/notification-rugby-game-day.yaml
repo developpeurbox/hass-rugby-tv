@@ -1,18 +1,20 @@
 blueprint:
   name: Rugby TV Notification jour de match
   description: >
-    Envoie une notification si au moins un capteur Rubgy Tv indique
-    un match "Aujourd'hui".
+    Envoie une notification si au moins un capteur Rugby TV indique
+    un match aujourd'hui.
   domain: automation
 
   input:
     match_sensors:
-      name: Capteurs de matchs Rubgy Tv
-      description: Sélectionner les capteurs sensor.rugby_tv_*
+      name: Capteurs de matchs Rugby TV
+      description: Uniquement les capteurs de l'intégration Rugby TV (sensor.rugby_tv_*)
       selector:
         entity:
-          domain: sensor
           multiple: true
+          filter:
+            - integration: rugby_tv
+              domain: sensor
 
     notification_service:
       name: Service de notification
@@ -29,7 +31,7 @@ blueprint:
 
     title_template:
       name: Titre de la notification
-      default: "⚽ Jour de match !"
+      default: "🏉 Jour de match !"
       selector:
         text:
 
@@ -59,7 +61,10 @@ variables:
       {% endif %}
     {% endfor %}
     {% for s in ns.result %}
-      ⚽ {{ state_attr(s, 'game') }} 🕐 {{ state_attr(s, 'heure') }} 📺 {{ state_attr(s, 'chaine') }}
+      {% set d1 = state_attr(s, 'diffuseur1') %}
+      {% set d2 = state_attr(s, 'diffuseur2') %}
+      {% set chaines = [d1, d2] | select('!=', '') | select('!=', none) | list | join(' / ') %}
+      🏉 {{ state_attr(s, 'game') }} 🕐 {{ state_attr(s, 'heure') }}{% if chaines %} 📺 {{ chaines }}{% endif %}
     {% endfor %}
 
 condition:

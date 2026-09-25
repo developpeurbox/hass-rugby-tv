@@ -47,6 +47,7 @@ async def _async_register_card(hass: HomeAssistant) -> None:
 
     add_extra_js_url(hass, f"{url}?v={cache_key}")
     hass.data[f"{DOMAIN}_card_registered"] = True
+    _LOGGER.info("rugby-tv-game-card enregistrée sur %s (v=%s)", url, cache_key)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -60,8 +61,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     try:
         await _async_register_card(hass)
-    except Exception as err:  # noqa: BLE001
-        _LOGGER.warning("Impossible d'enregistrer rugby-tv-game-card automatiquement : %s", err)
+    except Exception:  # noqa: BLE001
+        _LOGGER.exception("Impossible d'enregistrer rugby-tv-game-card automatiquement")
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 

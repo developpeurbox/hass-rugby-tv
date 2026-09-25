@@ -1,0 +1,75 @@
+blueprint:
+  name: Rugby TV Notification jour de match
+  description: >
+    Envoie une notification si au moins un capteur Rubgy Tv indique
+    un match "Aujourd'hui".
+  domain: automation
+
+  input:
+    match_sensors:
+      name: Capteurs de matchs Rubgy Tv
+      description: Sélectionner les capteurs sensor.rugby_tv_*
+      selector:
+        entity:
+          domain: sensor
+          multiple: true
+
+    notification_service:
+      name: Service de notification
+      description: "Ex: notify.mobiles_famille"
+      default: notify.mobile
+      selector:
+        text:
+
+    notify_time:
+      name: Heure de vérification
+      default: "08:00:00"
+      selector:
+        time:
+
+    title_template:
+      name: Titre de la notification
+      default: "⚽ Jour de match !"
+      selector:
+        text:
+
+trigger:
+  - platform: time
+    at: !input notify_time
+
+variables:
+  input_sensors: !input match_sensors
+  notify_svc: !input notification_service
+  title_rendered: !input title_template
+
+  matches: >
+    {% set ns = namespace(result=[]) %}
+    {% for entity_id in input_sensors %}
+      {% if state_attr(entity_id, 'date') in ["Aujourd'hui", "Aujourd\u2019hui"] %}
+        {% set ns.result = ns.result + [entity_id] %}
+      {% endif %}
+    {% endfor %}
+    {{ ns.result }}
+
+  message_rendered: |
+    {% set ns = namespace(result=[]) %}
+    {% for entity_id in input_sensors %}
+      {% if state_attr(entity_id, 'date') in ["Aujourd'hui", "Aujourd\u2019hui"] %}
+        {% set ns.result = ns.result + [entity_id] %}
+      {% endif %}
+    {% endfor %}
+    {% for s in ns.result %}
+      ⚽ {{ state_attr(s, 'game') }} 🕐 {{ state_attr(s, 'heure') }} 📺 {{ state_attr(s, 'chaine') }}
+    {% endfor %}
+
+condition:
+  - condition: template
+    value_template: "{{ matches | length > 0 }}"
+
+action:
+  - action: "{{ notify_svc }}"
+    data:
+      title: "{{ title_rendered }}"
+      message: "{{ message_rendered }}"
+
+mode: single

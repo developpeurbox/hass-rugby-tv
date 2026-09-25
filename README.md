@@ -8,7 +8,12 @@
 [![HACS Action](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hacs.yml/badge.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hacs.yml)
 [![HACS Action](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hassfest.yml/badge.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hassfest.yml)
 
-Intégration personnalisée pour Home Assistant permettant de suivre le **prochain match** de vos clubs de TOP 14 et PRO D2 préférés, à partir des fiches club officielles de la LNR (`top14.lnr.fr` / `prod2.lnr.fr`), avec sa carte Lovelace dédiée **incluse** (`rugby-lnr-game-card`).
+Intégration personnalisée pour Home Assistant permettant de suivre le **prochain match** de vos clubs de TOP 14 et PRO D2 préférés.
+
+A partir des fiches club officielles de la LNR (`top14.lnr.fr` / `prod2.lnr.fr`)
+
+Avec sa carte Lovelace dédiée **incluse** (`rugby-lnr-game-card`).
+
 
 
 ## ✨ Caractéristiques
@@ -37,18 +42,21 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
 | `datetime` / `datetime_fin` | Horodatage ISO du coup d'envoi / fin estimée   |
 | `display`           | `true` si le match est dans le futur                    |
 | `heure`             | Heure du coup d'envoi (HH:MM)                           |
-| `diffuseur`         | Nom du diffuseur TV                                     |
-| `logoDiffuseur`     | Logo du diffuseur TV                                    |
+| `diffuseur1`         | Nom du diffuseur TV 1                                   |
+| `logoDiffuseur1`     | Logo du diffuseur TV 1                                  |
+| `diffuseur2`         | Nom du diffuseur TV 2                                   |
+| `logoDiffuseur2`     | Logo du diffuseur TV 2                                  |
 | `game`              | Texte "Domicile - Extérieur"                             |
 | `lien_match`        | URL de la feuille de match LNR                          |
 
 ## 🏗️ Installation via HACS
 
 1. Dans HACS → **Intégrations** → menu ⋮ → **Dépôts personnalisés**.
-2. Ajouter l'URL de ce dépôt, catégorie **Integration**.
-3. Installer **Rugby TV LNR (TOP 14 / PRO D2)**.
-4. Redémarrer Home Assistant.
-5. **Paramètres → Appareils & services → Ajouter une intégration → Rugby TV**.
+2. Ajouter l'URL de ce dépôt, catégorie **Integration**      https://github.com/developpeurbox/hass-rugby-tv
+   
+4. Installer **Rugby TV LNR (TOP 14 / PRO D2)**.
+5. Redémarrer Home Assistant.
+6. **Paramètres → Appareils & services → Ajouter une intégration → Rugby TV**.
 
 ## 🏗️ Installation manuelle
 

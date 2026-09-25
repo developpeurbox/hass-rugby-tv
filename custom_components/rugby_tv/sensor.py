@@ -1,4 +1,4 @@
-"""Entités sensor Rugby Tv."""
+"""Entités sensor Rugby TV."""
 from __future__ import annotations
 
 from homeassistant.components.sensor import SensorEntity
@@ -16,7 +16,9 @@ EMPTY_ATTRS = {
     "exterieur": "", "logoExterieur": "", "shortExterieur": "",
     "situation": "", "date": "", "date_fr": "",
     "datetime": "", "datetime_fin": "", "display": False,
-    "heure": "", "diffuseur": "", "logoDiffuseur": "",
+    "heure": "",
+    "diffuseur1": "", "logoDiffuseur1": "",
+    "diffuseur2": "", "logoDiffuseur2": "",
     "game": "", "lien_match": "",
 }
 
@@ -66,7 +68,7 @@ class RugbyTvSensor(CoordinatorEntity, SensorEntity):
     def device_info(self):
         return {
             "identifiers": {(DOMAIN, "rugbytv_device")},
-            "name": "Rugby Tv",
+            "name": "Rugby TV",
             "model": "Match Sensor",
             "manufacturer": "developpeurbox",
         }

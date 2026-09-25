@@ -54,6 +54,9 @@ class RugbyTvConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._clubs: dict = {}
 
     async def async_step_user(self, user_input=None):
+        if self._async_current_entries():
+            return self.async_abort(reason="already_configured")
+
         errors = {}
 
         if not self._clubs:

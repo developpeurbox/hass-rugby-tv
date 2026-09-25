@@ -1,53 +1,13 @@
 """Intégration Rugby TV (TOP 14 / PRO D2) pour Home Assistant."""
 from __future__ import annotations
 
-import logging
-from pathlib import Path
-
-from homeassistant.components.frontend import add_extra_js_url
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
 from .coordinator import RugbyTvCoordinator
 
-_LOGGER = logging.getLogger(__name__)
-
 PLATFORMS = ["sensor"]
-
-CARD_FILENAME = "rugby-tv-game-card.js"
-CARD_URL_PATH = f"/{DOMAIN}_card"
-
-
-async def _async_register_card(hass: HomeAssistant) -> None:
-    """Enregistre la carte Lovelace fournie avec l'intégration (une seule fois)."""
-    if hass.data.get(f"{DOMAIN}_card_registered"):
-        return
-
-    card_path = Path(__file__).parent / "www" / CARD_FILENAME
-    url = f"{CARD_URL_PATH}/{CARD_FILENAME}"
-
-    try:
-        # HA récent (>= 2024.7)
-        from homeassistant.components.http import StaticPathConfig
-
-        await hass.http.async_register_static_paths(
-            [StaticPathConfig(url, str(card_path), cache_headers=False)]
-        )
-    except ImportError:
-        # HA plus ancien
-        hass.http.register_static_path(url, str(card_path), cache_headers=False)
-
-    # Cache-busting automatique : basé sur la date de modification du fichier,
-    # pas besoin de gérer un numéro de version à la main en plus de celui du .js.
-    try:
-        cache_key = int((await hass.async_add_executor_job(card_path.stat)).st_mtime)
-    except OSError:
-        cache_key = 0
-
-    add_extra_js_url(hass, f"{url}?v={cache_key}")
-    hass.data[f"{DOMAIN}_card_registered"] = True
-    _LOGGER.info("rugby-tv-game-card enregistrée sur %s (v=%s)", url, cache_key)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -58,11 +18,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
-
-    try:
-        await _async_register_card(hass)
-    except Exception:  # noqa: BLE001
-        _LOGGER.exception("Impossible d'enregistrer rugby-tv-game-card automatiquement")
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 

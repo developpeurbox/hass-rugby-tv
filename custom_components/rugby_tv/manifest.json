@@ -1,13 +1,14 @@
 {
   "domain": "rugby_tv",
-  "name": "Rugby Tv (TOP 14 / PRO D2)",
+  "name": "Rugby TV (TOP 14 / PRO D2)",
   "codeowners": ["@developpeurbox"],
   "config_flow": true,
-  "dependencies": ["frontend", "http"],
+  "dependencies": [],
   "documentation": "https://github.com/developpeurbox/hass-rugby-tv",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/developpeurbox/hass-rugby-tv/issues",
   "loggers": ["custom_components.rugby_tv"],
   "requirements": [],
-  "version": "0.0.5"
+  "single_config_entry": true,
+  "version": "0.0.6"
 }

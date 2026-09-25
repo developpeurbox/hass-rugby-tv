@@ -65,7 +65,8 @@ Avec sa carte Lovelace dédiée **incluse** (`rugby-lnr-game-card`).
 
 ## 🎨 Carte `rugby-tv-game-card`
 
-Fournie avec l'intégration (dossier `www/`), enregistrée automatiquement au démarrage — pas besoin d'ajouter une ressource Lovelace manuellement.
+Fournie avec le plugin https://github.com/developpeurbox/ha-rugby-tv-game-card/tree/main
+
 
 ```yaml
 type: custom:rugby-tv-game-card

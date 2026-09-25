@@ -1,6 +1,6 @@
 """Constantes pour l'intégration Rugby LNR (TOP 14 / PRO D2)."""
 
-DOMAIN = "rugby_lnr"
+DOMAIN = "rugbytv"
 SCAN_INTERVAL_HOURS = 6
 
 # Domaines LNR par compétition

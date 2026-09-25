@@ -8,7 +8,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .coordinator import RugbyLnrCoordinator
+from .coordinator import RugbyTvCoordinator
 
 EMPTY_ATTRS = {
     "team": "", "competition": "", "journee": "",
@@ -26,17 +26,17 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    coordinator: RugbyLnrCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: RugbyTvCoordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
-        [RugbyLnrSensor(coordinator, slug) for slug in coordinator.selected],
+        [RugbyTvSensor(coordinator, slug) for slug in coordinator.selected],
         update_before_add=True,
     )
 
 
-class RugbyLnrSensor(CoordinatorEntity, SensorEntity):
+class RugbyTvSensor(CoordinatorEntity, SensorEntity):
     """Un sensor = un club suivi (TOP 14 ou PRO D2)."""
 
-    def __init__(self, coordinator: RugbyLnrCoordinator, slug: str) -> None:
+    def __init__(self, coordinator: RugbyTvCoordinator, slug: str) -> None:
         super().__init__(coordinator)
         self._slug = slug
         display_name = slug.replace("-", " ").title()

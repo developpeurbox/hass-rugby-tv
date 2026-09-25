@@ -4,7 +4,7 @@
    (TOP 14 / PRO D2 — https://github.com/developpeurbox/hass-rugby-lnr)
    ======================================================== */
 
-const RUGBY_LNR_GAME_CARD_VERSION = "v0.1.0";
+const RUGBY_LNR_GAME_CARD_VERSION = "v0.0.1";
 
 class RugbyLnrGameCard extends HTMLElement {
 
@@ -109,8 +109,10 @@ class RugbyLnrGameCard extends HTMLElement {
     const logoExt     = b.logoExterieur || "";
     const gameName    = b.game          || "";
     const competition = [b.competition, b.journee].filter(Boolean).join(" · ");
-    const diffuseur   = b.diffuseur     || "";
-    const logoDiff    = b.logoDiffuseur || "";
+    const diffuseur1 = b.diffuseur1 || "";
+    const logoDiff1 = b.logoDiffuseur1 || "";
+    const diffuseur2 = b.diffuseur2 || "";
+    const logoDiff2 = b.logoDiffuseur2 || "";
     const heure       = b.heure         || "";
     const date        = b.date_fr || b.date || "";
 
@@ -174,6 +176,28 @@ class RugbyLnrGameCard extends HTMLElement {
             color: var(--rugby-footer-color, #e63946);
             font-size: 16px; font-weight: 600; letter-spacing: .3px;
           }
+          #${uid} .channel-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 6px;
+          }   
+          #${uid} .channel-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+          }
+          #${uid} .channel-logo {
+            max-width: 72px;
+            max-height: 28px;
+            object-fit: contain;
+          }
+          #${uid} .chaine {
+            font-size: 12px;
+            color: rgba(255,255,255,.4);
+          }
         </style>
 
         <div id="${uid}">
@@ -195,13 +219,23 @@ class RugbyLnrGameCard extends HTMLElement {
                     <span class="team-name">${b.domicile || ""}</span>
                   </div>
                   <div class="center">
-                    ${diffuseur ? `
-                      <div class="channel-zone">
-                        ${logoDiff ? `<img class="channel-logo" src="${logoDiff}">` : ""}
-                        <div class="chaine">${diffuseur}</div>
-                      </div>
-                    ` : `<div class="chaine">${state.state || ""}</div>`}
-                    <div class="heure">${heure}</div>
+                    ${diffuseur1 ? `
+                       <div class="channel-zone">
+                     
+                         <div class="channel-row">
+                           ${logoDiff1 ? `<img class="channel-logo" src="${logoDiff1}">` : ""}
+                           <div class="chaine">${diffuseur1}</div>
+                         </div>
+                     
+                         ${diffuseur2 ? `
+                           <div class="channel-row">
+                             ${logoDiff2 ? `<img class="channel-logo" src="${logoDiff2}">` : ""}
+                             <div class="chaine">${diffuseur2}</div>
+                           </div>
+                         ` : ""}
+                     
+                       </div>
+                     ` : `<div class="chaine">${state.state || ""}</div>`}
                   </div>
                   <div class="team-block">
                     <div class="team-logo-wrap">

@@ -20,27 +20,31 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
 - 🔗 Lien direct vers la feuille de match officielle.
 
 ## 🔧 Attributs disponibles par sensor
-
-| Attribut          | Description                                          |
-| ------------------ | ----------------------------------------------------- |
-| `state`             | Nom du diffuseur TV principal (ex: Canal +), ou "Aucun match" |
-| `team`              | Nom complet du club suivi                              |
-| `logoTeam`          | URL du logo du club suivi                              |
-| `competition`       | "TOP 14" ou "PRO D2"                                   |
-| `journee`           | Journée du championnat (ex: J4)                        |
-| `domicile`          | Équipe à domicile                                       |
-| `logoDomicile`      | Logo de l'équipe à domicile                             |
-| `exterieur`         | Équipe à l'extérieur                                    |
-| `logoExterieur`     | Logo de l'équipe à l'extérieur                          |
-| `situation`         | `dom` ou `ext` selon le rôle du club suivi              |
-| `date` / `date_fr`  | Date brute (JJ/MM/AAAA) / date en français              |
-| `datetime` / `datetime_fin` | Horodatage ISO du coup d'envoi / fin estimée   |
-| `display`           | `true` si le match est dans le futur                    |
-| `heure`             | Heure du coup d'envoi (HH:MM)                           |
-| `diffuseur1` / `logoDiffuseur1` | Nom / logo du 1er diffuseur TV              |
-| `diffuseur2` / `logoDiffuseur2` | Nom / logo du 2e diffuseur TV (s'il y en a un) |
-| `game`              | Texte "Domicile - Extérieur"                             |
-| `lien_match`        | URL de la feuille de match LNR                          |
+  <details>
+    <summary> Attributs </summary>
+  
+  
+  | Attribut          | Description                                          |
+  | ------------------ | ----------------------------------------------------- |
+  | `state`             | Nom du diffuseur TV principal (ex: Canal +), ou "Aucun match" |
+  | `team`              | Nom complet du club suivi                              |
+  | `logoTeam`          | URL du logo du club suivi                              |
+  | `competition`       | "TOP 14" ou "PRO D2"                                   |
+  | `journee`           | Journée du championnat (ex: J4)                        |
+  | `domicile`          | Équipe à domicile                                       |
+  | `logoDomicile`      | Logo de l'équipe à domicile                             |
+  | `exterieur`         | Équipe à l'extérieur                                    |
+  | `logoExterieur`     | Logo de l'équipe à l'extérieur                          |
+  | `situation`         | `dom` ou `ext` selon le rôle du club suivi              |
+  | `date` / `date_fr`  | Date brute (JJ/MM/AAAA) / date en français              |
+  | `datetime` / `datetime_fin` | Horodatage ISO du coup d'envoi / fin estimée   |
+  | `display`           | `true` si le match est dans le futur                    |
+  | `heure`             | Heure du coup d'envoi (HH:MM)                           |
+  | `diffuseur1` / `logoDiffuseur1` | Nom / logo du 1er diffuseur TV              |
+  | `diffuseur2` / `logoDiffuseur2` | Nom / logo du 2e diffuseur TV (s'il y en a un) |
+  | `game`              | Texte "Domicile - Extérieur"                             |
+  | `lien_match`        | URL de la feuille de match LNR                          |
+  </details>
 
 ## 🏗️ Installation via HACS
 

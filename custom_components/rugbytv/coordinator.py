@@ -175,7 +175,7 @@ def parse_prochain_match(html: str) -> dict | None:
     link_m = _RE_MATCH_LINK.search(block)
 
     club_imgs: list[dict] = []
-    broadcaster: dict | None = None
+    broadcasters: list[dict] = []
 
     for tag_m in _RE_IMG.finditer(block):
         tag = tag_m.group(0)
@@ -191,8 +191,13 @@ def parse_prochain_match(html: str) -> dict | None:
                 break
             continue
 
-        if "assets.lnr.fr" in src and len(club_imgs) == 1 and broadcaster is None:
-            broadcaster = {"logo": src, "nom": alt}
+        if "assets.lnr.fr" in src and len(club_imgs) >= 1:
+           broadcasters.append(
+               {
+               "logo": src,
+               "nom": alt,
+               }
+           )
 
     if len(club_imgs) < 2 or not date_m:
         return None
@@ -212,8 +217,10 @@ def parse_prochain_match(html: str) -> dict | None:
         "away_slug": away["slug"],
         "away_short": away["alt"],
         "away_logo": away["logo"],
-        "broadcaster_nom": broadcaster["nom"] if broadcaster else "",
-        "broadcaster_logo": broadcaster["logo"] if broadcaster else "",
+        "diffuseur1": broadcasters[0]["nom"] if len(broadcasters) > 0 else "",
+        "logoDiffuseur1": broadcasters[0]["logo"] if len(broadcasters) > 0 else "",
+        "diffuseur2": broadcasters[1]["nom"] if len(broadcasters) > 1 else "",
+        "logoDiffuseur2": broadcasters[1]["logo"] if len(broadcasters) > 1 else "",
         "match_link": link_m.group(1) if link_m else "",
     }
 
@@ -336,7 +343,7 @@ class RugbyLnrCoordinator(DataUpdateCoordinator):
                     exterieur_nom = away_info["name"] or match["away_short"]
 
                     data[slug] = {
-                        "state": match["broadcaster_nom"] or "Non renseigné",
+                        "state": match["diffuseur1"] or "Non renseigné",
                         "attributes": {
                             "team": team_name,
                             "logoTeam": team_logo,
@@ -355,8 +362,10 @@ class RugbyLnrCoordinator(DataUpdateCoordinator):
                             "datetime_fin": dt_fin_iso,
                             "display": display,
                             "heure": match["heure"],
-                            "diffuseur": match["broadcaster_nom"],
-                            "logoDiffuseur": match["broadcaster_logo"],
+                            "diffuseur1": match["diffuseur1"],
+                            "logoDiffuseur1": match["logoDiffuseur1"],
+                            "diffuseur2": match["diffuseur2"],
+                            "logoDiffuseur2": match["logoDiffuseur2"],
                             "game": f"{domicile_nom} - {exterieur_nom}",
                             "lien_match": match["match_link"],
                             "slug": slug,

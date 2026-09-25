@@ -1,6 +1,6 @@
-"""Constantes pour l'intégration Rugby LNR (TOP 14 / PRO D2)."""
+"""Constantes pour l'intégration Rugby TV (TOP 14 / PRO D2)."""
 
-DOMAIN = "rugbytv"
+DOMAIN = "rugby-tv"
 SCAN_INTERVAL_HOURS = 6
 
 # Domaines LNR par compétition
@@ -21,7 +21,7 @@ CLUB_INFO_CACHE_TTL = 6 * 3600  # secondes
 # URL distante du fichier clubs.json (liste des clubs suivis par compétition).
 # À adapter une fois le dépôt publié sur GitHub (même logique que hass-footao).
 CLUBS_JSON_URL = (
-    "https://raw.githubusercontent.com/developpeurbox/hass-rugbytv/"
-    "refs/heads/main/custom_components/rugbytv/clubs.json"
+    "https://raw.githubusercontent.com/developpeurbox/hass-rugby-tv/"
+    "refs/heads/main/custom_components/rugby-tv/clubs.json"
 )
 CLUBS_CACHE_TTL = 3600  # secondes — rechargement max 1x/heure

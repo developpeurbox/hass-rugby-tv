@@ -9,5 +9,5 @@
   "issue_tracker": "https://github.com/developpeurbox/hass-rugby-tv/issues",
   "loggers": ["custom_components.rugby_tv"],
   "requirements": [],
-  "version": "0.0.1"
+  "version": "0.0.5"
 }

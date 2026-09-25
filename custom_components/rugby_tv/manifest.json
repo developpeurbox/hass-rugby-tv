@@ -10,5 +10,5 @@
   "loggers": ["custom_components.rugby_tv"],
   "requirements": [],
   "single_config_entry": true,
-  "version": "0.0.6"
+  "version": "0.0.5"
 }

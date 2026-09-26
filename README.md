@@ -10,6 +10,8 @@
 
 Intégration personnalisée pour Home Assistant permettant de suivre le **prochain match** de vos clubs de TOP 14 et PRO D2 préférés, à partir des fiches club officielles de la LNR (`top14.lnr.fr` / `prod2.lnr.fr`).
 
+![Exemple RUgby TV Game Card](/doc/images/example.png "Exemple d'affichage")
+
 > 🎴 La carte Lovelace dédiée n'est **pas incluse** dans ce dépôt — elle vit dans son propre repo : [`ha-rugby-tv-game-card`](https://github.com/developpeurbox/ha-rugby-tv-game-card), à installer séparément.
 
 ## ✨ Caractéristiques

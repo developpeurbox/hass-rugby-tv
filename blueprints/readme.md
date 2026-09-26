@@ -25,9 +25,4 @@ Fonctionnalités clés :
 
 1. Le blueprint s’exécute une fois par jour à l’heure configurée
 2. Il parcourt tous les capteurs sélectionnés
-3. Il conserve ceux dont :
-   ```jinja
-   state_attr(sensor, 'date') == "Aujourd'hui"
 
-
----

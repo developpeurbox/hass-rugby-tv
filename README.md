@@ -113,3 +113,6 @@ logger:
   logs:
     custom_components.rugby_tv: debug
 ```
+
+### 💬 **Communauté & Support**
+🗣️ **Forum Home Assistant** : [Discuter ici](https://forum.hacf.fr/t/carte-lovelace-integration-rugby-tv-le-programme-tv-arrive-dans-home-assistant/84193)

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="/doc/images/example.png" alt="Exemple d'affichage" width="400"/>
+</p>
+
 # Rugby TV — Intégration HACS pour Home Assistant
 [![PayPal](https://img.shields.io/badge/paypal-me-blue.svg?style=for-the-badge&color=purple&logo=paypal&logoColor=ccc&link=https%3A%2F%2Fpaypal.me%2hlaissus/5)](https://paypal.me/hlaissus/5)
 [![GitHub Release]( https://img.shields.io/github/v/release/developpeurbox/hass-rugby-tv?style=for-the-badge&color=blue)](https://github.com/developpeurbox/hass-rugby-tv/releases)
@@ -10,59 +14,54 @@
 
 Intégration personnalisée pour Home Assistant permettant de suivre le **prochain match** de vos clubs de TOP 14 et PRO D2 préférés, à partir des fiches club officielles de la LNR (`top14.lnr.fr` / `prod2.lnr.fr`).
 
-![Exemple RUgby TV Game Card](/doc/images/example.png "Exemple d'affichage")
-
 > 🎴 La carte Lovelace dédiée n'est **pas incluse** dans ce dépôt — elle vit dans son propre repo : [`ha-rugby-tv-game-card`](https://github.com/developpeurbox/ha-rugby-tv-game-card), à installer séparément.
 
 ## ✨ Caractéristiques
 
-- 📅 Suivi multi-clubs : un sensor par club (TOP 14 + PRO D2, 29 clubs suivis par défaut).
+- 📅 Suivi multi-clubs : un sensor par club (TOP 14 + PRO D2).
 - 🏉 Infos complètes : adversaire, domicile/extérieur, journée, date, heure, diffuseur(s) TV, logos.
 - ⚙️ Configuration via l'interface Home Assistant (sélection multi-clubs, **une seule instance** de l'intégration).
 - 🔗 Lien direct vers la feuille de match officielle.
 
-## 🔧 Attributs disponibles par sensor
-  <details>
-    <summary> Attributs </summary>
-  
-  
-  | Attribut          | Description                                          |
-  | ------------------ | ----------------------------------------------------- |
-  | `state`             | Nom du diffuseur TV principal (ex: Canal +), ou "Aucun match" |
-  | `team`              | Nom complet du club suivi                              |
-  | `logoTeam`          | URL du logo du club suivi                              |
-  | `competition`       | "TOP 14" ou "PRO D2"                                   |
-  | `journee`           | Journée du championnat (ex: J4)                        |
-  | `domicile`          | Équipe à domicile                                       |
-  | `logoDomicile`      | Logo de l'équipe à domicile                             |
-  | `exterieur`         | Équipe à l'extérieur                                    |
-  | `logoExterieur`     | Logo de l'équipe à l'extérieur                          |
-  | `situation`         | `dom` ou `ext` selon le rôle du club suivi              |
-  | `date` / `date_fr`  | Date brute (JJ/MM/AAAA) / date en français              |
-  | `datetime` / `datetime_fin` | Horodatage ISO du coup d'envoi / fin estimée   |
-  | `display`           | `true` si le match est dans le futur                    |
-  | `heure`             | Heure du coup d'envoi (HH:MM)                           |
-  | `diffuseur1` / `logoDiffuseur1` | Nom / logo du 1er diffuseur TV              |
-  | `diffuseur2` / `logoDiffuseur2` | Nom / logo du 2e diffuseur TV (s'il y en a un) |
-  | `game`              | Texte "Domicile - Extérieur"                             |
-  | `lien_match`        | URL de la feuille de match LNR                          |
-  </details>
+## 📦 Installation
 
-## 🏗️ Installation via HACS
+> [!TIP]
+> ### Installation Rapide via HACS
+> Cliquez sur le bouton ci-dessous pour ajouter automatiquement le dépôt dans HACS :
+>
+> [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=developpeurbox&repository=hass-rugby-tv&category=integration)
 
-1. Dans HACS → **Intégrations** → menu ⋮ → **Dépôts personnalisés**.
-2. Ajouter l'URL `https://github.com/developpeurbox/hass-rugby-tv`, catégorie **Integration**.
-3. Installer **Rugby TV (TOP 14 / PRO D2)**.
-4. Redémarrer Home Assistant.
-5. **Paramètres → Appareils & services → Ajouter une intégration → Rugby TV**.
-6. Sélectionner les clubs à suivre.
+### 🏗️ Méthode 1 : HACS (Recommandée)
 
-> ℹ️ L'intégration n'autorise qu'**une seule instance**. Pour modifier la liste des clubs suivis par la suite, utilise le bouton **Configurer** sur l'intégration existante (pas "Ajouter une intégration" à nouveau).
+   1. Ouvrez **HACS** dans Home Assistant
+   2. Allez dans **Intégrations**
+   3. Cliquez sur les **3 points** en haut à droite → **Dépôts personnalisés**
+   4. Ajouter: [https://github.com/developpeurbox/hass-footao.git](https://github.com/developpeurbox/hass-rugby-tv)
+   5. Catégorie **Integration**
+   6. Cherchez "**Rugby TV**" et cliquez sur **Télécharger**
+   7. **Redémarrez Home Assistant**
+   
+### 🏗️ Méthode 2 : Manuelle
+   1. Téléchargez le dossier `custom_components/rugby_tv//` de ce dépôt.
+   2. Copiez-le dans le dossier `custom_components/rugby_tv//`  de votre instance Home Assistant.
+   3. **Redémarrez Home Assistant**
 
-## 🏗️ Installation manuelle
+## ⚙️ Configuration
 
-1. Copier `custom_components/rugby_tv/` dans le dossier `custom_components/` de votre instance Home Assistant.
-2. Redémarrer Home Assistant.
+> [!IMPORTANT]
+> ### Configuration Rapide
+> Cliquez sur le bouton ci-dessous pour démarrer la configuration automatiquement :
+>
+> [![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=rugby_tv)
+
+### Configuration Manuelle
+
+1. Allez dans **Configuration** → **Appareils et Services**
+2. Cliquez sur **+ Ajouter une intégration**
+3. Cherchez "**Rugby TV**"
+4. Renseignez les informations :
+
+Les équipes se saisissent depuis l'UI au moment de l'ajout de l'intégration :
 
 ## 🎴 Carte Lovelace
 
@@ -114,5 +113,32 @@ logger:
     custom_components.rugby_tv: debug
 ```
 
-### 💬 **Communauté & Support**
+## 💬 **Communauté & Support**
 🗣️ **Forum Home Assistant** : [Discuter ici](https://forum.hacf.fr/t/carte-lovelace-integration-rugby-tv-le-programme-tv-arrive-dans-home-assistant/84193)
+
+## 🔧 Attributs disponibles par sensor
+  <details>
+    <summary> Attributs </summary>
+  
+  
+  | Attribut          | Description                                          |
+  | ------------------ | ----------------------------------------------------- |
+  | `state`             | Nom du diffuseur TV principal (ex: Canal +), ou "Aucun match" |
+  | `team`              | Nom complet du club suivi                              |
+  | `logoTeam`          | URL du logo du club suivi                              |
+  | `competition`       | "TOP 14" ou "PRO D2"                                   |
+  | `journee`           | Journée du championnat (ex: J4)                        |
+  | `domicile`          | Équipe à domicile                                       |
+  | `logoDomicile`      | Logo de l'équipe à domicile                             |
+  | `exterieur`         | Équipe à l'extérieur                                    |
+  | `logoExterieur`     | Logo de l'équipe à l'extérieur                          |
+  | `situation`         | `dom` ou `ext` selon le rôle du club suivi              |
+  | `date` / `date_fr`  | Date brute (JJ/MM/AAAA) / date en français              |
+  | `datetime` / `datetime_fin` | Horodatage ISO du coup d'envoi / fin estimée   |
+  | `display`           | `true` si le match est dans le futur                    |
+  | `heure`             | Heure du coup d'envoi (HH:MM)                           |
+  | `diffuseur1` / `logoDiffuseur1` | Nom / logo du 1er diffuseur TV              |
+  | `diffuseur2` / `logoDiffuseur2` | Nom / logo du 2e diffuseur TV (s'il y en a un) |
+  | `game`              | Texte "Domicile - Extérieur"                             |
+  | `lien_match`        | URL de la feuille de match LNR                          |
+  </details>

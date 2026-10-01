@@ -61,7 +61,7 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
 3. Cherchez "**Rugby TV**"
 4. Renseignez les informations :
 
-Les équipes se saisissent depuis l'UI au moment de l'ajout de l'intégration :
+Les équipes se saisissent depuis l'UI au moment de l'ajout de l'intégration
 
 ## 🎴 Carte Lovelace
 

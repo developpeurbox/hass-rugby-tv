@@ -2,32 +2,15 @@
   "config": {
     "step": {
       "user": {
-        "title": "Rugby TV — Clubs",
-        "description": "Sélectionnez les clubs à suivre (TOP 14 et PRO D2 confondus).",
+        "title": "Rugby TV — Club",
+        "description": "Sélectionnez le club à suivre (TOP 14 ou PRO D2). Ajoutez l'intégration une nouvelle fois pour suivre un autre club.",
         "data": {
-          "clubs": "Clubs"
+          "club": "Club"
         }
       }
-    },
-    "error": {
-      "no_club": "Sélectionnez au moins un club."
     },
     "abort": {
-      "already_configured": "Rugby TV est déjà configuré. Utilisez le bouton \"Configurer\" sur l'intégration existante pour modifier les clubs suivis."
-    }
-  },
-  "options": {
-    "step": {
-      "init": {
-        "title": "Rugby TV — Modifier les clubs",
-        "description": "Choisissez les clubs à suivre (TOP 14 et PRO D2 confondus).",
-        "data": {
-          "clubs": "Clubs"
-        }
-      }
-    },
-    "error": {
-      "no_club": "Sélectionnez au moins un club."
+      "already_configured": "Ce club est déjà configuré (ou tous les clubs disponibles le sont déjà)."
     }
   }
 }

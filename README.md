@@ -20,7 +20,7 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
 
 - 📅 Suivi multi-clubs : un sensor par club (TOP 14 + PRO D2).
 - 🏉 Infos complètes : adversaire, domicile/extérieur, journée, date, heure, diffuseur(s) TV, logos.
-- ⚙️ Configuration via l'interface Home Assistant (sélection multi-clubs, **une seule instance** de l'intégration).
+- ⚙️ Configuration via l'interface Home Assistant (une équipe par entrée, ajoutez l'intégration autant de fois que nécessaire).
 - 🔗 Lien direct vers la feuille de match officielle.
 
 ## 📦 Installation

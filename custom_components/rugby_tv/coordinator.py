@@ -279,6 +279,7 @@ class RugbyTvCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self) -> dict:
         data: dict = {}
+        scraped_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         ssl_ctx = await self.hass.async_add_executor_job(ssl.create_default_context)
         ssl_ctx.check_hostname = False
         ssl_ctx.verify_mode = ssl.CERT_NONE
@@ -308,6 +309,7 @@ class RugbyTvCoordinator(DataUpdateCoordinator):
                                 "logoTeam": team_logo,
                                 "competition": comp_label,
                                 "slug": slug,
+                                "scraped_at": scraped_at,
                             },
                         }
                         continue
@@ -369,6 +371,7 @@ class RugbyTvCoordinator(DataUpdateCoordinator):
                             "game": f"{domicile_nom} - {exterieur_nom}",
                             "lien_match": match["match_link"],
                             "slug": slug,
+                            "scraped_at": scraped_at,
                         },
                     }
         except Exception as err:  # noqa: BLE001

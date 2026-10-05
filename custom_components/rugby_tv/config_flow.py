@@ -1,10 +1,10 @@
-"""Config flow Rugby LNR — sélection multi-clubs (TOP 14 + PRO D2)."""
+"""Config flow Rugby LNR — un club (TOP 14 ou PRO D2) par entrée."""
 from __future__ import annotations
 
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import (
     SelectSelector,
@@ -21,120 +21,71 @@ async def _load_clubs(hass: HomeAssistant) -> dict:
     return await load_clubs_async(session, force=True)
 
 
+def _title(slug: str) -> str:
+    return slug.replace("-", " ").title()
+
+
 def _build_options(clubs: dict) -> tuple[list[dict], dict[str, dict]]:
     """Retourne (options pour le sélecteur, dict slug -> config club)."""
     flat = flatten_clubs(clubs)
     options = [
-        {"value": slug, "label": f"{cfg['league']} — {slug.replace('-', ' ').title()}"}
+        {"value": slug, "label": f"{cfg['league']} — {_title(slug)}"}
         for slug, cfg in flat.items()
     ]
     options.sort(key=lambda o: o["label"])
     return options, flat
 
 
-def _add_missing_current(options: list[dict], flat: dict, current: dict) -> None:
-    """Ne jamais perdre un club coché même s'il a disparu du dataset."""
-    known = {opt["value"] for opt in options}
-    for slug, cfg in current.items():
-        if slug not in known:
-            league = cfg.get("league", "?")
-            options.append(
-                {"value": slug, "label": f"(retiré du dataset) {league} — {slug}"}
-            )
-            flat[slug] = cfg
-    options.sort(key=lambda o: o["label"])
-
-
 class RugbyTvConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Choisir les clubs TOP 14 / PRO D2 à suivre, en une étape."""
+    """Choisir UN club à suivre. Ajouter l'intégration plusieurs fois pour plusieurs clubs."""
 
-    VERSION = 1
+    VERSION = 2
 
     def __init__(self):
         self._clubs: dict = {}
 
     async def async_step_user(self, user_input=None):
-        if self._async_current_entries():
-            return self.async_abort(reason="already_configured")
-
-        errors = {}
-
         if not self._clubs:
             self._clubs = await _load_clubs(self.hass)
 
         options, flat = _build_options(self._clubs)
 
+        # On ne propose pas les clubs déjà configurés
+        configured = self._async_current_ids()
+        options = [o for o in options if o["value"] not in configured]
+        if not options:
+            return self.async_abort(reason="already_configured")
+
         if user_input is not None:
-            chosen = user_input.get("clubs", [])
-            if not chosen:
-                errors["clubs"] = "no_club"
-            else:
-                selected = {s: flat[s] for s in chosen if s in flat}
-                title = ", ".join(sorted(s.replace("-", " ").title() for s in selected))
-                return self.async_create_entry(title=title, data={"selected": selected})
+            slug = user_input["club"]
+            await self.async_set_unique_id(slug)
+            self._abort_if_unique_id_configured()
+            return self.async_create_entry(
+                title=_title(slug),
+                data={"selected": {slug: flat[slug]}},
+            )
 
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(
                 {
-                    vol.Required("clubs"): SelectSelector(
+                    vol.Required("club"): SelectSelector(
                         SelectSelectorConfig(
-                            options=options, multiple=True, mode=SelectSelectorMode.LIST
+                            options=options,
+                            multiple=False,
+                            mode=SelectSelectorMode.DROPDOWN,
                         )
                     ),
                 }
             ),
-            errors=errors,
         )
 
-    @staticmethod
-    @callback
-    def async_get_options_flow(config_entry):
-        return RugbyTvOptionsFlow(config_entry)
-
-
-class RugbyTvOptionsFlow(config_entries.OptionsFlow):
-    """Modifier les clubs suivis d'une entrée existante."""
-
-    def __init__(self, config_entry):
-        self._config_entry = config_entry
-        self._clubs: dict = {}
-
-    async def async_step_init(self, user_input=None):
-        errors = {}
-        current = dict(self.config_entry.data.get("selected", {}))
-
-        if not self._clubs:
-            self._clubs = await _load_clubs(self.hass)
-
-        options, flat = _build_options(self._clubs)
-        _add_missing_current(options, flat, current)
-
-        default_chosen = list(current.keys())
-
-        if user_input is not None:
-            chosen = user_input.get("clubs", [])
-            if not chosen:
-                errors["clubs"] = "no_club"
-            else:
-                selected = {s: flat[s] for s in chosen if s in flat}
-                self.hass.config_entries.async_update_entry(
-                    self.config_entry,
-                    title=", ".join(sorted(s.replace("-", " ").title() for s in selected)),
-                    data={**self.config_entry.data, "selected": selected},
-                )
-                return self.async_create_entry(title="", data={})
-
-        return self.async_show_form(
-            step_id="init",
-            data_schema=vol.Schema(
-                {
-                    vol.Required("clubs", default=default_chosen): SelectSelector(
-                        SelectSelectorConfig(
-                            options=options, multiple=True, mode=SelectSelectorMode.LIST
-                        )
-                    ),
-                }
-            ),
-            errors=errors,
+    async def async_step_import(self, import_data):
+        """Utilisé par la migration v1 -> v2 (une entrée créée par club)."""
+        slug = import_data["slug"]
+        await self.async_set_unique_id(slug)
+        self._abort_if_unique_id_configured()
+        return self.async_create_entry(
+            title=_title(slug),
+            data={"selected": {slug: import_data["cfg"]}},
         )

@@ -42,7 +42,9 @@ class RugbyTvSensor(CoordinatorEntity, SensorEntity):
         super().__init__(coordinator)
         self._slug = slug
         display_name = slug.replace("-", " ").title()
+        self._display_name = display_name
         self._attr_name = f"Rugby {display_name}"
+        # Inchangé : conserve les entity_id existants
         self._attr_unique_id = f"rugbytv_{slug.replace('-', '_')}"
         self._attr_icon = "mdi:rugby"
 
@@ -61,14 +63,15 @@ class RugbyTvSensor(CoordinatorEntity, SensorEntity):
     def extra_state_attributes(self) -> dict:
         d = self._data
         if d is None:
-            return {**EMPTY_ATTRS, "team": self._slug.replace("-", " ").title(), "slug": self._slug}
+            return {**EMPTY_ATTRS, "team": self._display_name, "slug": self._slug}
         return d.get("attributes", {})
 
     @property
     def device_info(self):
+        # Un appareil par club
         return {
-            "identifiers": {(DOMAIN, "rugbytv_device")},
-            "name": "Rugby TV",
+            "identifiers": {(DOMAIN, f"rugbytv_{self._slug}")},
+            "name": f"Rugby TV {self._display_name}",
             "model": "Match Sensor",
             "manufacturer": "developpeurbox",
         }

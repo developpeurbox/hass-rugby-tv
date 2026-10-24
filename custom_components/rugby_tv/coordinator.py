@@ -21,6 +21,7 @@ Si la LNR modifie sa page, seules les regex ci-dessous sont à ajuster.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import re
@@ -79,6 +80,13 @@ _clubs_last_updated: str = ""
 _clubs_source: str = ""
 
 
+def _read_local_clubs() -> dict:
+    """Lit le clubs.json embarqué (I/O bloquante — à appeler depuis un thread)."""
+    local = Path(__file__).parent / "clubs.json"
+    with open(local, encoding="utf-8") as f:
+        return json.load(f)
+
+
 async def load_clubs_async(session: aiohttp.ClientSession, force: bool = False, ssl_ctx=None) -> dict:
     """Charge clubs.json (liste des clubs TOP 14 / PRO D2 suivis).
 
@@ -106,9 +114,8 @@ async def load_clubs_async(session: aiohttp.ClientSession, force: bool = False, 
     except Exception as err:  # noqa: BLE001
         _LOGGER.debug("clubs.json GitHub inaccessible : %s — fallback local", err)
 
-    local = Path(__file__).parent / "clubs.json"
-    with open(local, encoding="utf-8") as f:
-        data = json.load(f)
+    # Lecture bloquante (open + json.load) : hors de la boucle d'événements
+    data = await asyncio.to_thread(_read_local_clubs)
     if not _clubs_cache:
         _clubs_cache = data
         _clubs_cache_ts = now

@@ -1,0 +1,16 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Rugby TV — Club",
+        "description": "Select the club to follow (TOP 14 or PRO D2). Add the integration again to follow another club.",
+        "data": {
+          "club": "Club"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This club is already configured (or all available clubs already are)."
+    }
+  }
+}

@@ -18,7 +18,7 @@ from .coordinator import flatten_clubs, load_clubs_async
 
 async def _load_clubs(hass: HomeAssistant) -> dict:
     session = async_get_clientsession(hass)
-    return await load_clubs_async(session, force=True)
+    return await load_clubs_async(hass, session, force=True)
 
 
 def _title(slug: str) -> str:

@@ -3,10 +3,10 @@
 </p>
 
 # Rugby TV — Intégration HACS pour Home Assistant
-[![PayPal](https://img.shields.io/badge/paypal-me-blue.svg?style=for-the-badge&color=purple&logo=paypal&logoColor=ccc&link=https%3A%2F%2Fpaypal.me%2hlaissus/5)](https://paypal.me/hlaissus/5)
-[![GitHub Release]( https://img.shields.io/github/v/release/developpeurbox/hass-rugby-tv?style=for-the-badge&color=blue)](https://github.com/developpeurbox/hass-rugby-tv/releases)
+[![PayPal](https://img.shields.io/badge/paypal-me-blue.svg?style=for-the-badge&color=purple&logo=paypal&logoColor=ccc&link=https%3A%2F%2Fpaypal.me%2Fhlaissus%2F5)](https://paypal.me/hlaissus/5)
+[![GitHub Release](https://img.shields.io/github/v/release/developpeurbox/hass-rugby-tv?style=for-the-badge&color=blue)](https://github.com/developpeurbox/hass-rugby-tv/releases)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge&color=blue)](https://github.com/hacs/integration)
-[![Community Forum]( https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge&color=pink)](https://forum.hacf.fr/)
+[![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge&color=pink)](https://forum.hacf.fr/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/blob/main/LICENSE)
 
 [![HACS Action](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hacs.yml/badge.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hacs.yml)
@@ -14,13 +14,14 @@
 
 Intégration personnalisée pour Home Assistant permettant de suivre le **prochain match** de vos clubs de TOP 14 et PRO D2 préférés, à partir des fiches club officielles de la LNR (`top14.lnr.fr` / `prod2.lnr.fr`).
 
-> 🎴 La carte Lovelace dédiée n'est **pas incluse** dans ce dépôt — elle vit dans son propre repo : [`ha-rugby-tv-game-card`](https://github.com/developpeurbox/ha-rugby-tv-game-card), à installer séparément.
+> 🎴 La carte Lovelace `rugby-tv-game-card` est **incluse** dans l'intégration : aucune installation séparée n'est nécessaire.
 
 ## ✨ Caractéristiques
 
 - 📅 Suivi multi-clubs : un sensor par club (TOP 14 + PRO D2).
 - 🏉 Infos complètes : adversaire, domicile/extérieur, journée, date, heure, diffuseur(s) TV, logos.
 - ⚙️ Configuration via l'interface Home Assistant (une équipe par entrée, ajoutez l'intégration autant de fois que nécessaire).
+- 🎴 Carte Lovelace incluse, prête à l'emploi.
 - 🔗 Lien direct vers la feuille de match officielle.
 
 ## 📦 Installation
@@ -36,14 +37,14 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
    1. Ouvrez **HACS** dans Home Assistant
    2. Allez dans **Intégrations**
    3. Cliquez sur les **3 points** en haut à droite → **Dépôts personnalisés**
-   4. Ajouter: [https://github.com/developpeurbox/hass-rugby-tv.git](https://github.com/developpeurbox/hass-rugby-tv)
+   4. Ajoutez : [https://github.com/developpeurbox/hass-rugby-tv](https://github.com/developpeurbox/hass-rugby-tv)
    5. Catégorie **Integration**
    6. Cherchez "**Rugby TV**" et cliquez sur **Télécharger**
    7. **Redémarrez Home Assistant**
-   
+
 ### 🏗️ Méthode 2 : Manuelle
-   1. Téléchargez le dossier `custom_components/rugby_tv//` de ce dépôt.
-   2. Copiez-le dans le dossier `custom_components/rugby_tv//`  de votre instance Home Assistant.
+   1. Téléchargez le dossier `custom_components/rugby_tv/` de ce dépôt.
+   2. Copiez-le dans le dossier `custom_components/` de votre instance Home Assistant.
    3. **Redémarrez Home Assistant**
 
 ## ⚙️ Configuration
@@ -59,14 +60,11 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
 1. Allez dans **Configuration** → **Appareils et Services**
 2. Cliquez sur **+ Ajouter une intégration**
 3. Cherchez "**Rugby TV**"
-4. Renseignez les informations :
-
-Les équipes se saisissent depuis l'UI au moment de l'ajout de l'intégration
+4. Choisissez votre équipe : les équipes se saisissent depuis l'UI au moment de l'ajout de l'intégration.
 
 ## 🎴 Carte Lovelace
 
-Voir [`ha-rugby-tv-game-card`](https://github.com/developpeurbox/ha-rugby-tv-game-card) pour l'installation (HACS "Frontend" ou manuelle + ressource Lovelace).
-Une fois installée :
+La carte est fournie avec l'intégration. Une fois l'intégration installée, ajoutez-la à votre dashboard :
 
 ```yaml
 type: custom:rugby-tv-game-card
@@ -90,9 +88,10 @@ filter:
         method: attribute
         attribute: datetime
 ```
+
 ### 🔔 Notification
 
-Voir les [**Rugby TV blueprints**](https://github.com/developpeurbox/hass-rugby-tv/blob/main/blueprints/readme.md) pour recevoir un rappel sur votre téléphone le matin du match à 08:00 :
+Voir les [**Rugby TV blueprints**](https://github.com/developpeurbox/hass-rugby-tv/blob/main/blueprints/readme.md) pour recevoir un rappel sur votre téléphone le matin du match à 08:00.
 
 ## 🔁 Rafraîchissement
 

@@ -64,7 +64,12 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
 
 ## 🎴 Carte Lovelace
 
-La carte est fournie avec l'intégration. Une fois l'intégration installée, ajoutez-la à votre dashboard :
+La carte est **embarquée** dans l'intégration (`custom_components/rugby_tv/www/`) et **enregistrée automatiquement** comme ressource du tableau de bord au démarrage de Home Assistant : il n'y a rien d'autre à installer.
+
+> [!WARNING]
+> N'installez pas en plus le dépôt `ha-rugby-tv-game-card` : la carte serait chargée deux fois. Si vous l'aviez déjà installé, supprimez-le de HACS ainsi que sa ressource dans **Paramètres → Tableaux de bord → Ressources**.
+
+Ajoutez-la ensuite à votre dashboard :
 
 ```yaml
 type: custom:rugby-tv-game-card

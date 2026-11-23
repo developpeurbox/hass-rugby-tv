@@ -7,8 +7,9 @@ from pathlib import Path
 from homeassistant.components.frontend import add_extra_js_url
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from homeassistant.loader import async_get_integration
 
@@ -74,6 +75,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Initialisation d'une entrée (= un club)."""
     selected: dict = entry.data.get("selected", {})
 
+    _async_adopt_registry_entries(hass, entry, selected)
+
     coordinator = RugbyTvCoordinator(hass, selected)
     await coordinator.async_config_entry_first_refresh()
 
@@ -91,13 +94,47 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return unload_ok
 
 
+def _entity_unique_id(slug: str) -> str:
+    return f"rugbytv_{slug.replace('-', '_')}"
+
+
+@callback
+def _async_adopt_registry_entries(
+    hass: HomeAssistant, entry: ConfigEntry, selected: dict
+) -> None:
+    """Rattache à `entry` les entrées du registre issues de la migration v1 -> v2.
+
+    Après la séparation, l'entité d'un club « détaché » est encore liée à
+    l'ancienne entrée. On la déplace vers la nouvelle entrée (une fois celle-ci
+    créée) au lieu de la supprimer : l'historique, la zone, les labels et le
+    renommage éventuel de l'utilisateur sont conservés.
+    """
+    ent_reg = er.async_get(hass)
+    dev_reg = dr.async_get(hass)
+    for slug in selected:
+        entity_id = ent_reg.async_get_entity_id("sensor", DOMAIN, _entity_unique_id(slug))
+        if not entity_id:
+            continue
+        reg_entry = ent_reg.async_get(entity_id)
+        if reg_entry is None or reg_entry.config_entry_id == entry.entry_id:
+            continue
+        if reg_entry.device_id:
+            dev_reg.async_update_device(
+                reg_entry.device_id, add_config_entry_id=entry.entry_id
+            )
+        ent_reg.async_update_entity(entity_id, config_entry_id=entry.entry_id)
+        _LOGGER.debug("rugby_tv : %s rattachée à l'entrée %s", entity_id, entry.entry_id)
+
+
 async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """v1 (une entrée, plusieurs clubs) -> v2 (une entrée par club).
 
     - la 1re entrée garde le 1er club (ordre alphabetique) ;
-    - les autres clubs sont retirés de cette entrée (entités supprimées du
-      registre) puis recréés dans de nouvelles entrées, avec le même
-      unique_id d'entité, donc les mêmes entity_id (sensor.rugby_<club>).
+    - les autres clubs sont retirés de cette entrée puis recréés dans de
+      nouvelles entrées (import flow). Leurs entités ne sont PAS supprimées du
+      registre : à l'initialisation de la nouvelle entrée,
+      `_async_adopt_registry_entries` les rattache à celle-ci, ce qui conserve
+      entity_id, historique, zone, labels et renommage.
     """
     if entry.version == 1:
         selected: dict = dict(entry.data.get("selected", {}))
@@ -106,13 +143,6 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         slugs = sorted(selected)
         keep, others = slugs[0], slugs[1:]
-
-        ent_reg = er.async_get(hass)
-        for slug in others:
-            unique_id = f"rugbytv_{slug.replace('-', '_')}"
-            entity_id = ent_reg.async_get_entity_id("sensor", DOMAIN, unique_id)
-            if entity_id:
-                ent_reg.async_remove(entity_id)
 
         hass.config_entries.async_update_entry(
             entry,

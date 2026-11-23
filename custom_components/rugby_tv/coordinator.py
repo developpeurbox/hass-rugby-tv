@@ -24,7 +24,6 @@ from __future__ import annotations
 import json
 import logging
 import re
-import ssl
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -32,6 +31,7 @@ from pathlib import Path
 import aiohttp
 
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
@@ -90,7 +90,6 @@ async def load_clubs_async(
     hass: HomeAssistant,
     session: aiohttp.ClientSession,
     force: bool = False,
-    ssl_ctx=None,
 ) -> dict:
     """Charge clubs.json (liste des clubs TOP 14 / PRO D2 suivis).
 
@@ -105,7 +104,7 @@ async def load_clubs_async(
 
     try:
         async with session.get(
-            CLUBS_JSON_URL, ssl=ssl_ctx, timeout=aiohttp.ClientTimeout(total=10)
+            CLUBS_JSON_URL, timeout=aiohttp.ClientTimeout(total=10)
         ) as resp:
             if resp.status == 200:
                 data = await resp.json(content_type=None)
@@ -251,10 +250,12 @@ class RugbyTvCoordinator(DataUpdateCoordinator):
             hass, _LOGGER, name=DOMAIN, update_interval=timedelta(hours=SCAN_INTERVAL_HOURS)
         )
 
-    async def _fetch_html(self, session: aiohttp.ClientSession, ssl_ctx, url: str) -> str | None:
+    async def _fetch_html(self, session: aiohttp.ClientSession, url: str) -> str | None:
         try:
             async with session.get(
-                url, ssl=ssl_ctx, timeout=aiohttp.ClientTimeout(total=15)
+                url,
+                headers=HEADERS,
+                timeout=aiohttp.ClientTimeout(total=15),
             ) as resp:
                 if resp.status != 200:
                     _LOGGER.warning("rugbytv %s → HTTP %s", url, resp.status)
@@ -265,7 +266,7 @@ class RugbyTvCoordinator(DataUpdateCoordinator):
             return None
 
     async def _get_club_info(
-        self, session: aiohttp.ClientSession, ssl_ctx, domain: str, slug: str
+        self, session: aiohttp.ClientSession, domain: str, slug: str
     ) -> dict:
         """Nom complet + logo d'un club, avec cache mémoire (TTL)."""
         now = time.monotonic()
@@ -273,7 +274,7 @@ class RugbyTvCoordinator(DataUpdateCoordinator):
         if cached and (now - cached[0]) < CLUB_INFO_CACHE_TTL:
             return cached[1]
 
-        html = await self._fetch_html(session, ssl_ctx, f"{domain}/club/{slug}")
+        html = await self._fetch_html(session, f"{domain}/club/{slug}")
         if not html:
             info = {"name": slug.replace("-", " ").title(), "short": "", "logo": "", "html": ""}
         else:
@@ -291,100 +292,97 @@ class RugbyTvCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict:
         data: dict = {}
         scraped_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        ssl_ctx = await self.hass.async_add_executor_job(ssl.create_default_context)
-        ssl_ctx.check_hostname = False
-        ssl_ctx.verify_mode = ssl.CERT_NONE
+        session = async_get_clientsession(self.hass)
 
         try:
-            async with aiohttp.ClientSession(headers=HEADERS) as session:
-                for slug, cfg in self.selected.items():
-                    comp_key = cfg.get("comp", "top14")
-                    comp = COMPETITIONS.get(comp_key, COMPETITIONS["top14"])
-                    domain = comp["domain"]
-                    comp_label = comp["label"]
+            for slug, cfg in self.selected.items():
+                comp_key = cfg.get("comp", "top14")
+                comp = COMPETITIONS.get(comp_key, COMPETITIONS["top14"])
+                domain = comp["domain"]
+                comp_label = comp["label"]
 
-                    club_info = await self._get_club_info(session, ssl_ctx, domain, slug)
-                    team_name = club_info["name"]
-                    team_logo = club_info["logo"]
-                    html = club_info.get("html") or await self._fetch_html(
-                        session, ssl_ctx, f"{domain}/club/{slug}"
-                    )
+                club_info = await self._get_club_info(session, domain, slug)
+                team_name = club_info["name"]
+                team_logo = club_info["logo"]
+                html = club_info.get("html") or await self._fetch_html(
+                    session, f"{domain}/club/{slug}"
+                )
 
-                    match = parse_prochain_match(html) if html else None
+                match = parse_prochain_match(html) if html else None
 
-                    if not match:
-                        data[slug] = {
-                            "state": "Aucun match",
-                            "attributes": {
-                                "team": team_name,
-                                "logoTeam": team_logo,
-                                "competition": comp_label,
-                                "slug": slug,
-                                "scraped_at": scraped_at,
-                            },
-                        }
-                        continue
-
-                    situation = "dom" if match["home_slug"] == slug else "ext"
-
-                    if match["home_slug"] == slug:
-                        home_info = club_info
-                    else:
-                        home_info = await self._get_club_info(session, ssl_ctx, domain, match["home_slug"])
-
-                    if match["away_slug"] == slug:
-                        away_info = club_info
-                    else:
-                        away_info = await self._get_club_info(session, ssl_ctx, domain, match["away_slug"])
-
-                    try:
-                        jj, mm, aaaa = match["date"].split("/")
-                        hh, mn = (match["heure"].split(":") if match["heure"] else ("0", "0"))
-                        dt_debut = datetime(int(aaaa), int(mm), int(jj), int(hh), int(mn))
-                        dt_fin = dt_debut + timedelta(hours=2)
-                        dt_iso = dt_debut.strftime("%Y-%m-%d %H:%M:%S")
-                        dt_fin_iso = dt_fin.strftime("%Y-%m-%d %H:%M:%S")
-                        display = dt_fin > datetime.now()
-                        date_fr = _format_date_fr(dt_debut)
-                    except (ValueError, KeyError):
-                        dt_iso = ""
-                        dt_fin_iso = ""
-                        display = True
-                        date_fr = match["date"]
-
-                    domicile_nom = home_info["name"] or match["home_short"]
-                    exterieur_nom = away_info["name"] or match["away_short"]
-
+                if not match:
                     data[slug] = {
-                        "state": match["diffuseur1"] or "Non renseigné",
+                        "state": "Aucun match",
                         "attributes": {
                             "team": team_name,
                             "logoTeam": team_logo,
                             "competition": comp_label,
-                            "journee": match["journee"],
-                            "domicile": domicile_nom,
-                            "logoDomicile": home_info["logo"] or match["home_logo"],
-                            "shortDomicile": match["home_short"],
-                            "exterieur": exterieur_nom,
-                            "logoExterieur": away_info["logo"] or match["away_logo"],
-                            "shortExterieur": match["away_short"],
-                            "situation": situation,
-                            "date": match["date"],
-                            "date_fr": date_fr,
-                            "datetime": dt_iso,
-                            "datetime_fin": dt_fin_iso,
-                            "display": display,
-                            "heure": match["heure"],
-                            "diffuseur1": match["diffuseur1"],
-                            "logoDiffuseur1": match["logoDiffuseur1"],
-                            "diffuseur2": match["diffuseur2"],
-                            "logoDiffuseur2": match["logoDiffuseur2"],
-                            "game": f"{domicile_nom} - {exterieur_nom}",
-                            "lien_match": match["match_link"],
                             "slug": slug,
                             "scraped_at": scraped_at,
                         },
                     }
+                    continue
+
+                situation = "dom" if match["home_slug"] == slug else "ext"
+
+                if match["home_slug"] == slug:
+                    home_info = club_info
+                else:
+                    home_info = await self._get_club_info(session, domain, match["home_slug"])
+
+                if match["away_slug"] == slug:
+                    away_info = club_info
+                else:
+                    away_info = await self._get_club_info(session, domain, match["away_slug"])
+
+                try:
+                    jj, mm, aaaa = match["date"].split("/")
+                    hh, mn = (match["heure"].split(":") if match["heure"] else ("0", "0"))
+                    dt_debut = datetime(int(aaaa), int(mm), int(jj), int(hh), int(mn))
+                    dt_fin = dt_debut + timedelta(hours=2)
+                    dt_iso = dt_debut.strftime("%Y-%m-%d %H:%M:%S")
+                    dt_fin_iso = dt_fin.strftime("%Y-%m-%d %H:%M:%S")
+                    display = dt_fin > datetime.now()
+                    date_fr = _format_date_fr(dt_debut)
+                except (ValueError, KeyError):
+                    dt_iso = ""
+                    dt_fin_iso = ""
+                    display = True
+                    date_fr = match["date"]
+
+                domicile_nom = home_info["name"] or match["home_short"]
+                exterieur_nom = away_info["name"] or match["away_short"]
+
+                data[slug] = {
+                    "state": match["diffuseur1"] or "Non renseigné",
+                    "attributes": {
+                        "team": team_name,
+                        "logoTeam": team_logo,
+                        "competition": comp_label,
+                        "journee": match["journee"],
+                        "domicile": domicile_nom,
+                        "logoDomicile": home_info["logo"] or match["home_logo"],
+                        "shortDomicile": match["home_short"],
+                        "exterieur": exterieur_nom,
+                        "logoExterieur": away_info["logo"] or match["away_logo"],
+                        "shortExterieur": match["away_short"],
+                        "situation": situation,
+                        "date": match["date"],
+                        "date_fr": date_fr,
+                        "datetime": dt_iso,
+                        "datetime_fin": dt_fin_iso,
+                        "display": display,
+                        "heure": match["heure"],
+                        "diffuseur1": match["diffuseur1"],
+                        "logoDiffuseur1": match["logoDiffuseur1"],
+                        "diffuseur2": match["diffuseur2"],
+                        "logoDiffuseur2": match["logoDiffuseur2"],
+                        "game": f"{domicile_nom} - {exterieur_nom}",
+                        "lien_match": match["match_link"],
+                        "slug": slug,
+                        "scraped_at": scraped_at,
+                    },
+                }
         except Exception as err:  # noqa: BLE001
             raise UpdateFailed(f"Erreur scraping Rugby TV : {err}") from err
 

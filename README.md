@@ -5,7 +5,7 @@
 # Rugby TV — Intégration HACS pour Home Assistant
 [![PayPal](https://img.shields.io/badge/paypal-me-blue.svg?style=for-the-badge&color=purple&logo=paypal&logoColor=ccc&link=https%3A%2F%2Fpaypal.me%2Fhlaissus%2F5)](https://paypal.me/hlaissus/5)
 [![GitHub Release](https://img.shields.io/github/v/release/developpeurbox/hass-rugby-tv?style=for-the-badge&color=blue)](https://github.com/developpeurbox/hass-rugby-tv/releases)
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge&color=blue)](https://github.com/hacs/integration)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=for-the-badge&color=blue)](https://github.com/hacs/integration)
 [![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge&color=pink)](https://forum.hacf.fr/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/blob/main/LICENSE)
 
@@ -26,26 +26,30 @@ Intégration personnalisée pour Home Assistant permettant de suivre le **procha
 
 ## 📦 Installation
 
-> [!TIP]
-> ### Installation Rapide via HACS
-> Cliquez sur le bouton ci-dessous pour ajouter automatiquement le dépôt dans HACS :
->
-> [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=developpeurbox&repository=hass-rugby-tv&category=integration)
+### 🏗️ Via HACS (recommandée)
 
-### 🏗️ Méthode 1 : HACS (Recommandée)
+1. Ouvrez **HACS** dans Home Assistant.
+2. Allez dans **Intégrations**.
+3. Recherchez **Rugby TV**.
+4. Sélectionnez l'intégration puis cliquez sur **Télécharger**.
+5. **Redémarrez Home Assistant**.
 
-   1. Ouvrez **HACS** dans Home Assistant
-   2. Allez dans **Intégrations**
-   3. Cliquez sur les **3 points** en haut à droite → **Dépôts personnalisés**
-   4. Ajoutez : [https://github.com/developpeurbox/hass-rugby-tv](https://github.com/developpeurbox/hass-rugby-tv)
-   5. Catégorie **Integration**
-   6. Cherchez "**Rugby TV**" et cliquez sur **Télécharger**
-   7. **Redémarrez Home Assistant**
+### 🏗️ Dépôt personnalisé (si Rugby TV n'apparaît pas dans HACS)
 
-### 🏗️ Méthode 2 : Manuelle
-   1. Téléchargez le dossier `custom_components/rugby_tv/` de ce dépôt.
-   2. Copiez-le dans le dossier `custom_components/` de votre instance Home Assistant.
-   3. **Redémarrez Home Assistant**
+Si l'intégration n'est pas encore disponible dans la liste des intégrations HACS :
+
+1. Ouvrez **HACS** puis **Intégrations**.
+2. Cliquez sur les **3 points** en haut à droite → **Dépôts personnalisés**.
+3. Ajoutez : [https://github.com/developpeurbox/hass-rugby-tv](https://github.com/developpeurbox/hass-rugby-tv)
+4. Sélectionnez la catégorie **Intégration**.
+5. Cliquez sur **Ajouter**, puis recherchez **Rugby TV** et téléchargez l'intégration.
+6. **Redémarrez Home Assistant**.
+
+### 🏗️ Installation manuelle
+
+1. Téléchargez le dossier `custom_components/rugby_tv/` de ce dépôt.
+2. Copiez-le dans le dossier `custom_components/` de votre instance Home Assistant.
+3. **Redémarrez Home Assistant**.
 
 ## ⚙️ Configuration
 

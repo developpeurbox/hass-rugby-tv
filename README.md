@@ -9,6 +9,7 @@
 [![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge&color=pink)](https://forum.hacf.fr/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/blob/main/LICENSE)
 
+![Téléchargements](https://img.shields.io/github/downloads/developpeurbox/hass-rugby-tv/total?label=T%C3%A9l%C3%A9chargements)
 [![HACS Action](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hacs.yml/badge.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hacs.yml)
 [![HACS Action](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hassfest.yml/badge.svg?style=for-the-badge)](https://github.com/developpeurbox/hass-rugby-tv/actions/workflows/hassfest.yml)
 

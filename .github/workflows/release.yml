@@ -35,6 +35,20 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Créer le zip de l'intégration
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          cd custom_components/rugby_tv
+          zip -r ../../rugby_tv.zip .
+
+      - name: Créer le tag + la release
+        if: steps.check.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          generate_release_notes: true
+          files: rugby_tv.zip
       - name: Créer le tag + la release
         if: steps.check.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
